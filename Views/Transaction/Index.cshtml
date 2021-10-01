@@ -1,0 +1,76 @@
+﻿<div class="container">
+    <h2>Transaction Record</h2>
+    <br />
+    <br />
+</div>
+
+<div class="col-md-12">
+    @*<div id="dialog">
+        </div>*@
+    <p>Kendo UI version <strong id="kendoVersion"></strong></p>
+    <div class="success-dialog"></div>
+    <div id="window">
+        <form id="form"></form>
+    </div>
+    <span id="undo" class="k-button hide-on-narrow" style="margin-bottom:10px">Create New Transaction</span>
+    <div id="t1"></div>
+    Kendo Combobox
+    <input id="cmbEmployee"/>
+    <div id="transaction-list" style="margin-top:10px"></div>
+</div>
+<script src="~/Scripts/transaction/transaction.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        loadTransaction();
+        var myWindow = $("#window"),
+            undo = $("#undo");
+        undo.kendoButton({
+            icon: "edit"
+        });
+        buildTransactinForm();
+        undo.click(function () {
+            updateWindowProps(null, false);
+            myWindow.data("kendoWindow").open();
+            undo.fadeOut();
+        });
+
+        function onClose() {
+            undo.fadeIn();
+        }
+
+        myWindow.kendoWindow({
+            width: "600px",
+            visible: false,
+            actions: [
+                "Close"
+            ],
+            close: onClose
+        }).data("kendoWindow");
+
+        $("#dialog").kendoDialog({
+            title: "Create New Transaction",
+            closable: false,
+            modal: false,
+            width: "600px",
+            /*content: "<p>A new version of <strong>Kendo UI</strong> is available. Would you like to download and install it now?<p>",*/
+            actions: [
+                { text: 'NO' },
+                { text: 'OK', primary: true }
+            ]
+        });       
+        $("#kendoVersion").text(kendo.version);
+        $("#cmbEmployee").kendoComboBox({
+            dataSource: [
+                { EmployeeID: 1, EmployeeName: "Ash" },
+                { EmployeeID: 2, EmployeeName: "Bsh" },
+                { EmployeeID: 3, EmployeeName: "Csh" },
+            ],
+            placeholder: "Select",
+            dataTextField: "EmployeeName",
+            dataValueField: "EmployeeID",
+            index: 0,
+            suggest: true,
+            filter: "contains"
+        });
+    });
+</script>
